@@ -1,0 +1,30 @@
+console.info("Muestro informacion");
+VM679:1 Muestro informacion
+undefined
+console.log("Muestro contenido")
+VM837:1 Muestro contenido
+undefined
+console.warn("Mensaje de advertencia")
+VM933:1 Mensaje de advertencia
+(anónimas) @ VM933:1
+undefined
+console.error("Mensaje de error")
+VM1023:1 Mensaje de error
+(anónimas) @ VM1023:1
+undefined
+console.error("Mensaje de error");
+
+VM1032:1 Mensaje de error
+(anónimas) @ VM1032:1
+undefined
+console.error("Mensaje de error");
+console.warn("Mensaje de advertencia");
+console.log("Muestro contenido");
+console.info("Muestro informacion");
+VM1060:1 Mensaje de error
+(anónimas) @ VM1060:1
+VM1060:2 Mensaje de advertencia
+(anónimas) @ VM1060:2
+VM1060:3 Muestro contenido
+VM1060:4 Muestro informacion
+undefined

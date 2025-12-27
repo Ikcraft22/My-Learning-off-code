@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    /* Agrega estilos aquí */
+    table {
+      border-collapse: collapse;
+    }
+    td {
+      width: 50px;
+      height: 50px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid black;
+      font-size: 36px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Define la estructura del juego aquí -->
+  <table>
+    <tr>
+      <td id="cell-0-0"></td>
+      <td id="cell-0-1"></td>
+      <td id="cell-0-2"></td>
+    </tr>
+    <tr>
+      <td id="cell-1-0"></td>
+      <td id="cell-1-1"></td>
+      <td id="cell-1-2"></td>
+    </tr>
+    <tr>
+      <td id="cell-2-0"></td>
+      <td id="cell-2-1"></td>
+      <td id="cell-2-2"></td>
+    </tr>
+  </table>
+  <script>
+    // Agrega interactividad y lógica del juego aquí
+    const cells = document.querySelectorAll("td");
+    let currentPlayer = "X";
+    let gameOver = false;
+
+    cells.forEach(cell => {
+      cell.addEventListener("click", event => {
+        if (gameOver || cell.textContent) {
+          return;
+        }
+        if (currentPlayer === "X") {
+          // Usa el icono de "X" para representar a las "X"
+          cell.innerHTML = `<i class="fa fa-times"></i>`;
+        } else {
+          // Usa el icono de círculo para representar a los círculos
+          cell.innerHTML = `<i class="fa fa-circle-o"></i>`;
+        }
+        checkWin();
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+      });
+    });
+
+    function checkWin() {
+      const winningCombinations = [
+        // Horizontales
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        // Verticales
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        // Diagonales
+        [0, 4, 8],
+        [2, 4, 6],
+  ];
+
+  for (const combination of winningCombinations) {
+    if (combination.every(index => cells[index].innerHTML === currentPlayer)) {
+      alert(`¡${currentPlayer} ha ganado!`);
+      gameOver = true;
+      return;
+    }
+  }
+
+  if (cells.every(cell => cell.innerHTML)) {
+    alert("¡Empate!");
+    gameOver = true;
+  }
+}
