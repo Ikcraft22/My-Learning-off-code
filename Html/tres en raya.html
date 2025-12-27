@@ -1,24 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <meta charset="utf-8" />
+  <title>Tres en raya</title>
   <style>
-    /* Agrega estilos aquí */
-    table {
-      border-collapse: collapse;
-    }
+    /* Estilos */
+    table { border-collapse: collapse; margin: 20px auto; }
     td {
-      width: 50px;
-      height: 50px;
+      width: 80px;
+      height: 80px;
       text-align: center;
       vertical-align: middle;
       border: 1px solid black;
-      font-size: 36px;
+      font-size: 48px;
+      cursor: pointer;
+      user-select: none;
     }
   </style>
 </head>
 <body>
-  <!-- Define la estructura del juego aquí -->
   <table>
     <tr>
       <td id="cell-0-0"></td>
@@ -36,54 +36,60 @@
       <td id="cell-2-2"></td>
     </tr>
   </table>
+
   <script>
-    // Agrega interactividad y lógica del juego aquí
-    const cells = document.querySelectorAll("td");
+    // Selección de celdas como array
+    const cells = Array.from(document.querySelectorAll("td"));
     let currentPlayer = "X";
     let gameOver = false;
 
-    cells.forEach(cell => {
-      cell.addEventListener("click", event => {
-        if (gameOver || cell.textContent) {
-          return;
-        }
-        if (currentPlayer === "X") {
-          // Usa el icono de "X" para representar a las "X"
-          cell.innerHTML = `<i class="fa fa-times"></i>`;
-        } else {
-          // Usa el icono de círculo para representar a los círculos
-          cell.innerHTML = `<i class="fa fa-circle-o"></i>`;
-        }
+    // Añadimos listeners
+    cells.forEach((cell, index) => {
+      cell.addEventListener("click", () => {
+        // Comprobamos si el juego terminó o si la celda ya tiene jugador
+        if (gameOver || cell.dataset.player) return;
+
+        // Guardamos el jugador en data-player (esto facilita la lógica)
+        cell.dataset.player = currentPlayer;
+
+        // Representación: uso de texto 'X' / 'O' (más fiable que depender de fuentes externas)
+        cell.textContent = currentPlayer;
+
         checkWin();
+        // Cambiamos turno
         currentPlayer = currentPlayer === "X" ? "O" : "X";
       });
     });
 
     function checkWin() {
       const winningCombinations = [
-        // Horizontales
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        // Verticales
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        // Diagonales
-        [0, 4, 8],
-        [2, 4, 6],
-  ];
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6],
+      ];
 
-  for (const combination of winningCombinations) {
-    if (combination.every(index => cells[index].innerHTML === currentPlayer)) {
-      alert(`¡${currentPlayer} ha ganado!`);
-      gameOver = true;
-      return;
+      for (const combo of winningCombinations) {
+        const [a,b,c] = combo;
+        const pa = cells[a].dataset.player;
+        // Si hay jugador en a y es igual en b y c => ganador
+        if (pa && pa === cells[b].dataset.player && pa === cells[c].dataset.player) {
+          alert(`${pa} ha ganado!`);
+          gameOver = true;
+          return;
+        }
+      }
+
+      // Empate: todas las celdas ocupadas
+      if (cells.every(cell => cell.dataset.player)) {
+        alert("¡Empate!");
+        gameOver = true;
+      }
     }
-  }
-
-  if (cells.every(cell => cell.innerHTML)) {
-    alert("¡Empate!");
-    gameOver = true;
-  }
-}
+  </script>
+</body>
+</html>
