@@ -1,0 +1,15 @@
+for (x = 0; x < 2; x++) {
+    console.count();
+}
+VM618:2 default: 1
+VM618:2 default: 2
+undefined
+console.table(["Asia", "America", "Africa", "Europa"]);
+VM657:1 (índice)Valor(índice)Valor0'Asia'1'America'2'Africa'3'Europa'Array(4)
+undefined
+console.time("Tiempo");
+setTimeout(() => {
+    console.timeEnd("Tiempo");
+}, 2000);
+5
+VM701:3 Tiempo: 2071.661865234375 ms

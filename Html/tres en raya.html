@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Tres en raya</title>
+  <style>
+    /* Estilos */
+    table { border-collapse: collapse; margin: 20px auto; }
+    td {
+      width: 80px;
+      height: 80px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid black;
+      font-size: 48px;
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <tr>
+      <td id="cell-0-0"></td>
+      <td id="cell-0-1"></td>
+      <td id="cell-0-2"></td>
+    </tr>
+    <tr>
+      <td id="cell-1-0"></td>
+      <td id="cell-1-1"></td>
+      <td id="cell-1-2"></td>
+    </tr>
+    <tr>
+      <td id="cell-2-0"></td>
+      <td id="cell-2-1"></td>
+      <td id="cell-2-2"></td>
+    </tr>
+  </table>
+
+  <script>
+    // Selección de celdas como array
+    const cells = Array.from(document.querySelectorAll("td"));
+    let currentPlayer = "X";
+    let gameOver = false;
+
+    // Añadimos listeners
+    cells.forEach((cell, index) => {
+      cell.addEventListener("click", () => {
+        // Comprobamos si el juego terminó o si la celda ya tiene jugador
+        if (gameOver || cell.dataset.player) return;
+
+        // Guardamos el jugador en data-player (esto facilita la lógica)
+        cell.dataset.player = currentPlayer;
+
+        // Representación: uso de texto 'X' / 'O' (más fiable que depender de fuentes externas)
+        cell.textContent = currentPlayer;
+
+        checkWin();
+        // Cambiamos turno
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+      });
+    });
+
+    function checkWin() {
+      const winningCombinations = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6],
+      ];
+
+      for (const combo of winningCombinations) {
+        const [a,b,c] = combo;
+        const pa = cells[a].dataset.player;
+        // Si hay jugador en a y es igual en b y c => ganador
+        if (pa && pa === cells[b].dataset.player && pa === cells[c].dataset.player) {
+          alert(`${pa} ha ganado!`);
+          gameOver = true;
+          return;
+        }
+      }
+
+      // Empate: todas las celdas ocupadas
+      if (cells.every(cell => cell.dataset.player)) {
+        alert("¡Empate!");
+        gameOver = true;
+      }
+    }
+  </script>
+</body>
+</html>
