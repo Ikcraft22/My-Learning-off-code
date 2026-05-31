@@ -1,0 +1,27 @@
+Proceso PruebaPalindromo
+	// Prueba de escritorio para verificar si una palabra es un palíndromo
+	// Palabra de entrada: "Anilina"
+
+	Definir palabra, palabra_invertida Como Cadena
+	Definir es_palindromo Como Logico
+
+	// Paso 1: Convertir a minúsculas
+	palabra <- "Anilina"
+	palabra <- ConvertirAMinusculas(palabra) // Resultado: "anilina"
+
+	// Paso 2: Invertir la palabra
+	palabra_invertida <- ""
+	Para i <- Longitud(palabra) Hasta 1 Con Paso -1 Hacer
+		palabra_invertida <- palabra_invertida + Subcadena(palabra, i, i)
+	Fin Para
+	// Resultado: palabra_invertida = "anilina"
+
+	// Paso 3: Comparar palabra original con la invertida
+	Si palabra = palabra_invertida Entonces
+		es_palindromo <- Verdadero
+		Escribir "La palabra es un palíndromo."
+	SiNo
+		es_palindromo <- Falso
+		Escribir "La palabra no es un palíndromo."
+	Fin Si
+Fin Proceso

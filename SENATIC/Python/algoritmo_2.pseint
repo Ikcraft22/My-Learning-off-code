@@ -1,0 +1,28 @@
+Proceso VerificarPalindromo
+	// Requerimiento 2: Verificar si una palabra es un palíndromo
+	// Temas aplicados: Manipulación de cadenas, funciones, estructuras de control
+
+	Definir palabra, palabra_invertida Como Cadena
+	Definir es_palindromo Como Logico
+
+	// Palabra de ejemplo
+	palabra <- "Anilina"
+
+	// Convertir a minúsculas
+	palabra <- ConvertirAMinusculas(palabra)
+
+	// Invertir la palabra
+	palabra_invertida <- ""
+	Para i <- Longitud(palabra) Hasta 1 Con Paso -1 Hacer
+		palabra_invertida <- palabra_invertida + Subcadena(palabra, i, i)
+	Fin Para
+
+	// Verificar si es un palíndromo
+	Si palabra = palabra_invertida Entonces
+		es_palindromo <- Verdadero
+		Escribir "La palabra ", palabra, " es un palíndromo."
+	SiNo
+		es_palindromo <- Falso
+		Escribir "La palabra ", palabra, " no es un palíndromo."
+	Fin Si
+Fin Proceso

@@ -1,0 +1,38 @@
+Proceso OrdenarDiccionarios
+	// Requerimiento 3: Ordenar una lista de diccionarios por un valor específico
+	// Temas aplicados: Gestión de colecciones, funciones, estructuras de control
+
+	Definir personas Como Diccionario[]
+	Definir clave_orden Como Cadena
+	Definir lista_ordenada Como Diccionario[]
+
+	// Lista de ejemplo
+	personas <- [
+		["nombre": "Ana", "edad": 25],
+		["nombre": "Luis", "edad": 30],
+		["nombre": "Carlos", "edad": 20]
+	]
+
+	// Clave para ordenar
+	clave_orden <- "edad"
+
+	// Verificar si la lista está vacía
+	Si Longitud(personas) = 0 Entonces
+		Escribir "La lista está vacía."
+		Fin Proceso
+	Fin Si
+
+	// Verificar si la clave existe en todos los diccionarios
+	Para Cada persona En personas Hacer
+		Si No ExisteClave(persona, clave_orden) Entonces
+			Escribir "La clave '", clave_orden, "' no existe en todos los diccionarios."
+			Fin Proceso
+		Fin Si
+	Fin Para
+
+	// Ordenar la lista
+	lista_ordenada <- OrdenarPorClave(personas, clave_orden)
+
+	// Mostrar el resultado
+	Escribir "Lista ordenada por '", clave_orden, "': ", lista_ordenada
+Fin Proceso

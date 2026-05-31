@@ -1,0 +1,37 @@
+Proceso PruebaOrdenarDiccionarios
+	// Prueba de escritorio para ordenar una lista de diccionarios por una clave específica
+	// Lista de entrada: [{"nombre": "Ana", "edad": 25}, {"nombre": "Luis", "edad": 30}, {"nombre": "Carlos", "edad": 20}]
+	// Clave de ordenación: "edad"
+
+	Definir personas Como Diccionario[]
+	Definir clave_orden Como Cadena
+	Definir lista_ordenada Como Diccionario[]
+
+	// Paso 1: Definir la lista de diccionarios
+	personas <- [
+		["nombre": "Ana", "edad": 25],
+		["nombre": "Luis", "edad": 30],
+		["nombre": "Carlos", "edad": 20]
+	]
+	clave_orden <- "edad"
+
+	// Paso 2: Verificar si la lista está vacía
+	Si Longitud(personas) = 0 Entonces
+		Escribir "La lista está vacía."
+		Fin Proceso
+	Fin Si
+
+	// Paso 3: Verificar si la clave existe en todos los diccionarios
+	Para Cada persona En personas Hacer
+		Si No ExisteClave(persona, clave_orden) Entonces
+			Escribir "La clave no existe en todos los diccionarios."
+			Fin Proceso
+		Fin Si
+	Fin Para
+
+	// Paso 4: Ordenar la lista
+	lista_ordenada <- OrdenarPorClave(personas, clave_orden)
+
+	// Resultado esperado: [{"nombre": "Carlos", "edad": 20}, {"nombre": "Ana", "edad": 25}, {"nombre": "Luis", "edad": 30}]
+	Escribir "Lista ordenada: ", lista_ordenada
+Fin Proceso

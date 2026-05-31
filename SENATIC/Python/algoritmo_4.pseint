@@ -1,0 +1,26 @@
+Proceso GenerarFibonacci
+	// Requerimiento 4: Generar una secuencia de Fibonacci hasta un número dado
+	// Temas aplicados: Cálculos matemáticos, funciones, estructuras de control
+
+	Definir hasta Como Entero
+	Definir secuencia Como Entero[]
+	Definir siguiente Como Entero
+
+	// Límite superior de ejemplo
+	hasta <- 100
+
+	// Inicializar la secuencia
+	secuencia <- [0, 1]
+
+	// Generar la secuencia
+	Repetir
+		siguiente <- secuencia[Longitud(secuencia) - 1] + secuencia[Longitud(secuencia) - 2]
+		Si siguiente > hasta Entonces
+			Salir
+		Fin Si
+		Agregar siguiente A secuencia
+	Hasta Que Falso
+
+	// Mostrar el resultado
+	Escribir "Secuencia de Fibonacci hasta ", hasta, ": ", secuencia
+Fin Proceso

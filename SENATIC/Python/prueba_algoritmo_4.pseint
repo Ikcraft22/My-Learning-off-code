@@ -1,0 +1,26 @@
+Proceso PruebaFibonacci
+	// Prueba de escritorio para generar la secuencia de Fibonacci hasta un número dado
+	// Límite superior: 10
+
+	Definir hasta Como Entero
+	Definir secuencia Como Entero[]
+	Definir siguiente Como Entero
+
+	// Paso 1: Definir el límite superior
+	hasta <- 10
+
+	// Paso 2: Inicializar la secuencia
+	secuencia <- [0, 1]
+
+	// Paso 3: Generar la secuencia
+	Repetir
+		siguiente <- secuencia[Longitud(secuencia) - 1] + secuencia[Longitud(secuencia) - 2]
+		Si siguiente > hasta Entonces
+			Salir
+		Fin Si
+		Agregar siguiente A secuencia
+	Hasta Que Falso
+
+	// Resultado esperado: [0, 1, 1, 2, 3, 5, 8]
+	Escribir "Secuencia generada: ", secuencia
+Fin Proceso

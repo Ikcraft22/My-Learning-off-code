@@ -1,0 +1,29 @@
+Proceso TorresDeHanoi
+	// Requerimiento 5: Resolver el problema de las Torres de Hanoi para n discos
+	// Temas aplicados: Cálculos matemáticos, recursión, estructuras de control
+
+	SubProceso ResolverHanoi(n, origen, destino, auxiliar)
+		Si n = 1 Entonces
+			Escribir "Mover disco 1 de ", origen, " a ", destino
+			Fin SubProceso
+		Fin Si
+
+		// Mover n-1 discos de origen a auxiliar
+		Llamar ResolverHanoi(n - 1, origen, auxiliar, destino)
+
+		// Mover el disco más grande de origen a destino
+		Escribir "Mover disco ", n, " de ", origen, " a ", destino
+
+		// Mover n-1 discos de auxiliar a destino
+		Llamar ResolverHanoi(n - 1, auxiliar, destino, origen)
+	Fin SubProceso
+
+	Definir num_discos Como Entero
+
+	// Número de discos de ejemplo
+	num_discos <- 3
+
+	// Resolver el problema
+	Escribir "Resolviendo Torres de Hanoi para ", num_discos, " discos:"
+	Llamar ResolverHanoi(num_discos, "Origen", "Destino", "Auxiliar")
+Fin Proceso
