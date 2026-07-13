@@ -1,252 +1,145 @@
-# 🏥 SISTEMA DE INVENTARIO DE MEDICAMENTOS - DOCUMENTACIÓN COMPLETA
+# Documentación completa del sistema
 
-**Fecha de Creación**: 31 de mayo de 2026  
-**Versión**: 1.0.0  
-**Estado**: Producción  
-**Autor**: Sistema de IA - GitHub Copilot
+Fecha de actualización: 13 de julio de 2026
+Versión: 1.0.1
+Estado: funcional
 
----
+## 1. Introducción
 
-## 📑 Tabla de Contenidos
+Este proyecto implementa un sistema de inventario y punto de venta para farmacias y negocios relacionados con medicamentos. Está pensado para trabajar de forma local, con una base de datos SQLite por defecto y una interfaz web basada en Flask.
 
-1. [Introducción](#introducción)
-2. [Estructura del Proyecto](#estructura-del-proyecto)
-3. [Características Implementadas](#características-implementadas)
-4. [Requisitos del Sistema](#requisitos-del-sistema)
-5. [Instalación y Configuración](#instalación-y-configuración)
-6. [Guía de Uso](#guía-de-uso)
-7. [Arquitectura Técnica](#arquitectura-técnica)
-8. [Módulos y Componentes](#módulos-y-componentes)
-9. [APIs Integradas](#apis-integradas)
-10. [Base de Datos](#base-de-datos)
-11. [Interfaces de Usuario](#interfaces-de-usuario)
-12. [Ejemplos de Uso](#ejemplos-de-uso)
-13. [Solución de Problemas](#solución-de-problemas)
-14. [FAQ](#faq)
-15. [Roadmap Futuro](#roadmap-futuro)
+## 2. Objetivo del sistema
 
----
+El sistema permite:
 
-## Introducción
+- registrar productos y sus presentaciones
+- controlar stock
+- registrar movimientos de inventario
+- generar ventas y tickets
+- consultar información por GTIN
+- usar varias interfaces: terminal, GUI y web
 
-Este proyecto implementa un **sistema profesional de caja registradora e inventario** diseñado específicamente para farmacias y establecimientos de medicamentos. El sistema fue creado desde cero con una arquitectura robusta, modular y escalable.
+## 3. Arquitectura general
 
-### Objetivo Principal
-Automatizar completamente la gestión de inventario y ventas mediante:
-- Escaneo de códigos de barras (GTIN)
-- Consulta automática de información de productos en APIs externas
-- Gestión de inventario en tiempo real
-- Sistema de punto de venta integrado
-- Reportes detallados
-- Múltiples interfaces de usuario
+El proyecto está organizado de forma modular:
 
-### Casos de Uso
-- 🏪 Farmacias pequeñas y medianas
-- 🏥 Hospitales y clínicas
-- 💊 Distribuidoras de medicamentos
-- 🛒 Tiendas de suplementos
+- config/: configuración global y variables de entorno
+- database/: conexión y modelos SQLAlchemy
+- core/: lógica de negocio para inventario, POS y escaneo
+- api/: integración con servicios externos para GTIN
+- ui/: interfaces de consola y gráfica
+- web/: aplicación Flask con rutas y endpoints REST
 
----
+## 4. Componentes principales
 
-## Estructura del Proyecto
+### 4.1 Base de datos
 
-```
-inventario-medicamentos/
-│
-├── 📁 config/
-│   ├── __init__.py
-│   └── settings.py              ⚙️ Configuración global
-│
-├── 📁 database/
-│   ├── __init__.py
-│   ├── connection.py            🔗 Conexión a BD
-│   └── models.py                📊 Modelos SQLAlchemy
-│
-├── 📁 api/
-│   ├── __init__.py
-│   ├── gtin_lookup.py           🔍 Búsqueda GTIN (Multi-API)
-│   └── google_api.py            🌐 Google Custom Search
-│
-├── 📁 core/
-│   ├── __init__.py
-│   ├── barcode_scanner.py       📱 Lectura de códigos
-│   ├── inventory_manager.py     📦 Gestión de inventario
-│   └── pos_manager.py           🛒 Punto de venta
-│
-├── 📁 ui/
-│   ├── __init__.py
-│   ├── terminal_ui.py           💻 Interfaz Terminal
-│   └── gui_ui.py                🖥️ Interfaz Gráfica (PyQt5)
-│
-├── 📁 web/
-│   ├── __init__.py
-│   ├── app.py                   🌐 Flask App + API REST
-│   ├── templates/
-│   │   ├── index.html           🏠 Principal
-│   │   ├── inventario.html      📦 Inventario
-│   │   ├── pos.html             🛒 POS
-│   │   └── reportes.html        📊 Reportes
-│   └── static/                  🎨 Archivos estáticos
-│
-├── 📁 data/                     📂 Archivos de datos
-│
-├── main.py                      🚀 Punto de entrada
-├── init_db.py                   ⚙️ Inicializador
-├── requirements.txt             📦 Dependencias
-├── .env                         🔑 Configuración
-├── README.md                    📖 Documentación
-├── FAQ.md                       ❓ Preguntas frecuentes
-├── CHANGELOG.md                 📋 Historial
-├── QUICKSTART.txt               ⚡ Inicio rápido
-└── DOCUMENTACION_COMPLETA.md   📄 Este archivo
+El proyecto usa SQLAlchemy. Por defecto se emplea SQLite y el archivo de base de datos es:
+
+- inventario.db
+
+Los modelos principales son:
+
+- Producto
+- Presentacion
+- MovimientoInventario
+- Venta
+- VentaItem
+- Usuario
+
+### 4.2 Interfaces
+
+- Terminal: se accede desde main.py, opción 1
+- GUI: se accede desde main.py, opción 2, requiere PyQt5
+- Web: se accede desde main.py, opción 3 y se abre en http://localhost:5000
+
+### 4.3 APIs
+
+El sistema integra búsquedas de GTIN mediante:
+
+- OpenFoodFacts
+- Google Custom Search, si la configuración está disponible
+
+## 5. Configuración
+
+### 5.1 SQLite (recomendado)
+
+```env
+DB_ENGINE=sqlite
+SQLITE_FILE=./inventario.db
 ```
 
----
+### 5.2 MySQL (opcional)
 
-## Características Implementadas
+```env
+DB_ENGINE=mysql
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_USER=root
+MYSQL_PASSWORD=
+MYSQL_DATABASE=inventario_medicamentos
+```
 
-### A. 📦 GESTIÓN DE INVENTARIO
+## 6. Ejecución
 
-#### 1. Registro de Productos
-- Crear nuevos productos con información completa
-- Asignar GTIN (código de barras internacional)
-- Almacenar datos del laboratorio y descripción
-- Consulta automática en APIs externas
+### Desde la terminal
 
-#### 2. Búsqueda por Código de Barras
-- Lectura directa desde escáner o teclado
-- Validación automática de GTIN (8, 12, 13, 14 dígitos)
-- Verificación de dígito de control
-- Búsqueda en base de datos local
+```bash
+python main.py
+```
 
-#### 3. Múltiples Presentaciones
-Cada medicamento puede tener varios tipos de presentación:
-- 💊 Tableta
-- 💊 Cápsula
-- 💉 Ampolla
-- 🧴 Frasco
-- � Sobre
-- � Jarabe
-- ➕ Otra
+### Desde la web
 
-#### 4. Gestión de Stock
-- Entrada de mercancía
-- Salida por venta
-- Ajustes manuales
-- Devoluciones
-- Stock mínimo configurable
-- Alertas automáticas
+1. ejecutar la aplicación
+2. elegir la opción 3
+3. abrir el navegador en http://localhost:5000
 
-#### 5. Historial y Movimientos
-- Registro completo de cada movimiento
-- Razón del movimiento (factura, compra, ajuste, etc.)
-- Usuario responsable
-- Referencia externa (número de factura)
-- Fecha y hora automáticas
+## 7. Funcionalidades actuales
 
-### B. 🛒 PUNTO DE VENTA (POS) - CAJA REGISTRADORA
+### Inventario
 
-#### 1. Carrito de Compra
-- Agregar múltiples productos
-- Indicar cantidad por presentación
-- Aplicar descuentos individuales
-- Ver resumen en tiempo real
+- crear productos
+- asignar presentaciones
+- registrar entradas y salidas
+- controlar stock mínimo
+- ver movimientos
 
-#### 2. Procesamiento de Venta
-- Generar número de ticket único
-- Calcular subtotal automáticamente
-- Aplicar impuesto IVA (configurable)
-- Calcular total final
-- Múltiples métodos de pago
+### POS
 
-#### 3. Generación de Tickets
-- Número de ticket único: `TK-YYYYMMDD-XXXXXX`
-- Información del producto
-- Cantidad, precio, descuento
-- Subtotal e impuestos
-- Total a pagar
-- Datos del cajero
+- agregar productos a una venta
+- calcular montos
+- registrar método de pago
+- generar ticket
 
-#### 4. Métodos de Pago
-- 💵 Efectivo
-- 💳 Tarjeta de crédito/débito
-- 📱 Transferencia bancaria
-- ➕ Otros (configurable)
+### Reportes
 
-### C. 📊 REPORTES EN TIEMPO REAL
+- reporte general de inventario
+- reporte de ventas diarias
+- listado de stock bajo
 
-#### 1. Reporte de Inventario
-- Total de productos registrados
-- Cantidad total de unidades en stock
-- Valor monetario del inventario
-- Productos sin stock
-- Productos en estado de alerta
+## 8. Observaciones técnicas
 
-#### 2. Reporte de Ventas Diarias
-- Cantidad de ventas realizadas
-- Total de ventas del día
-- Promedio por venta
-- Desglose por método de pago
-- Impuestos cobrados
+- las tablas se crean automáticamente al iniciar la aplicación
+- los endpoints web están definidos en web/app.py
+- la configuración se carga desde config/settings.py
+- la entrada principal del sistema es main.py
 
-#### 3. Productos con Stock Bajo
-- Lista de productos bajo inventario
-- Stock actual vs. stock mínimo
-- Nivel de urgencia (CRÍTICO o BAJO)
-- Recomendaciones de reorden
+## 9. Recomendaciones
 
-#### 4. Exportación de Reportes
-- Visualización en pantalla
-- Exportable a Excel
-- Exportable a PDF
-- Histórico de reportes
+- usar SQLite para desarrollo y pruebas locales
+- mantener el archivo .env fuera del control de versiones
+- instalar PyQt5 si se quiere usar la interfaz gráfica
+- revisar los logs si ocurre un error al iniciar la web o la GUI
 
-### D. 🖥️ INTERFACES DE USUARIO
+## 10. Archivos clave
 
-#### 1. Interfaz Terminal (CLI)
-- Menú interactivo en la consola
-- Ideal para escaneo contínuo
-- Rápida y eficiente
-- Sin dependencias gráficas
+- main.py: menú principal
+- config/settings.py: configuración global
+- database/models.py: modelos de base de datos
+- core/inventory_manager.py: operaciones de inventario
+- core/pos_manager.py: operaciones de POS
+- web/app.py: aplicación Flask y API REST
 
-**Características:**
-- Búsqueda de productos
-- Registro de entradas/salidas
-- Punto de venta integrado
-- Reportes textuales
-- Menús jerárquicos intuitivos
-
-#### 2. Interfaz Gráfica (GUI) - PyQt5
-- Interfaz visual moderna y profesional
-- Ventanas con pestañas
-- Tablas interactivas
-- Diálogos de confirmación
-- Ideal para usuarios no técnicos
-
-**Características:**
-- Diseño responsivo
-- Colores profesionales
-- Iconos descriptivos
-- Menús desplegables
-- Búsqueda rápida
-
-#### 3. Interfaz Web - Flask
-- Accesible desde cualquier navegador
-- Totalmente responsiva
-- API REST completa
-- Diseño moderno y limpio
-- Acceso desde múltiples dispositivos
-
-**Características:**
-- Dashboard con resumen
-- Búsqueda de productos
-- POS integrado con carrito visual
-- Reportes gráficos
-- Historial de ventas
-
----
-
-## Requisitos del Sistema
 
 ### Software Requerido
 ```

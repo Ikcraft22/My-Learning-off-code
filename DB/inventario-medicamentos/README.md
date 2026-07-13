@@ -1,253 +1,105 @@
 # Sistema de Inventario de Medicamentos
 
-Un **sistema profesional de caja registradora** para farmacias con:
-- ✅ Gestión de inventario automatizada
-- ✅ Punto de venta (POS)
-- ✅ Escaneo de códigos de barras (GTIN)
-- ✅ Consulta a APIs externas (Google + OpenFoodFacts)
-- ✅ Múltiples interfaces: Terminal, GUI y Web
-- ✅ Base de datos local SQLite (por defecto)
-- ✅ Reportes en tiempo real
+Documentación actualizada el 13 de julio de 2026.
 
-## 📋 Requisitos Previos
+## Estado actual del proyecto
 
-### Software Requerido
-- **Python 3.8+**
-- **SQLite** (incluido con Python)
-- **Git** (opcional)
+Este proyecto ya funciona como un sistema básico pero completo para la gestión de inventario y ventas de medicamentos, con soporte para:
 
-### Instalación de Python
-Descarga desde: https://www.python.org/downloads/
+- gestión de productos y presentaciones
+- registro de movimientos de entrada/salida/ajuste
+- punto de venta con tickets y métodos de pago
+- búsqueda de información por GTIN
+- interfaces por terminal, GUI y web
+- base de datos SQLite por defecto, con soporte opcional para MySQL
 
-## 🚀 Instalación Rápida
+## Requisitos
 
-### 1. Descargar el Proyecto
+- Python 3.10 o superior
+- pip
+- SQLite (incluido con Python)
+- opcional: PyQt5 para la interfaz gráfica
+
+## Instalación rápida
+
+1. Crear y activar un entorno virtual
 ```bash
-cd Mi-Learning-of-code/DB
-cd inventario-medicamentos
-```
-
-### 2. Crear Entorno Virtual (Recomendado)
-```bash
-# Windows
 python -m venv venv
 venv\Scripts\activate
-
-# Linux/Mac
-python3 -m venv venv
-source venv/bin/activate
 ```
 
-### 3. Instalar Dependencias
+2. Instalar dependencias
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configurar Base de Datos
-
-#### Opción recomendada: SQLite local (predeterminado)
-1. Edita el archivo `.env` en la raíz:
-```env
-DB_ENGINE=sqlite
-SQLITE_FILE=./inventario.db
-```
-2. Ejecuta la aplicación:
+3. Ejecutar la aplicación
 ```bash
 python main.py
 ```
 
-#### Opción alternativa: MySQL con XAMPP
-1. Edita `.env` y configura:
+## Uso de la aplicación
+
+Al ejecutar el programa aparece un menú principal con estas opciones:
+
+- 1. Terminal: interfaz de consola
+- 2. GUI: interfaz gráfica con PyQt5
+- 3. Web: servidor Flask en http://localhost:5000
+- 4. Configuración: guía para usar SQLite o MySQL
+- 5. Salir
+
+## Configuración recomendada
+
+Por defecto el proyecto usa SQLite y guarda la base en:
+
+```env
+DB_ENGINE=sqlite
+SQLITE_FILE=./inventario.db
+```
+
+Si prefieres MySQL, puedes configurarlo en el archivo .env con:
+
 ```env
 DB_ENGINE=mysql
 MYSQL_HOST=localhost
 MYSQL_PORT=3306
 MYSQL_USER=root
-MYSQL_PASSWORD=     # Deja vacío si no tienes contraseña
+MYSQL_PASSWORD=
 MYSQL_DATABASE=inventario_medicamentos
 ```
-2. Si usas MySQL, crea la base de datos en XAMPP / MySQL:
-```bash
-mysql -u root
-CREATE DATABASE inventario_medicamentos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-```
 
-### 5. Ejecutar la Aplicación
-```bash
-python main.py
-```
+## Estructura principal
 
-## 📱 Interfaces Disponibles
+- config/: configuración general del proyecto
+- database/: modelos SQLAlchemy y conexión a la base de datos
+- core/: lógica de inventario, POS y escaneo
+- api/: integraciones con GTIN y APIs externas
+- ui/: interfaces terminal y GUI
+- web/: aplicación Flask y endpoints REST
+- data/: archivos de datos adicionales
 
-### 1. **Terminal (CLI)** - Interfaz de Línea de Comandos
-```bash
-# Opción 1 en el menú principal
-```
-- Menú interactivo en la terminal
-- Rápido y eficiente
-- Ideal para escaneo contínuo
+## Funcionalidades ya incluidas
 
-### 2. **Interfaz Gráfica (GUI)** - PyQt5
-```bash
-# Opción 2 en el menú principal
-```
-- Interfaz visual profesional
-- Muy intuitiva
-- Requiere PyQt5 (incluido en requirements.txt)
+- registrar productos con GTIN, CUM y datos del laboratorio
+- crear presentaciones con stock y precios
+- registrar movimientos de inventario
+- generar ventas y tickets
+- consultar productos por GTIN
+- mostrar reportes básicos de inventario y ventas
+- exponer una API web para productos, inventario y ventas
 
-### 3. **Interfaz Web** - Flask
-```bash
-# Opción 3 en el menú principal
-# Luego abre: http://localhost:5000
-```
-- Accesible desde cualquier dispositivo
-- Interfaz responsiva
-- Ideal para múltiples usuarios
+## Notas importantes
 
-## 📦 Estructura del Proyecto
+- La base de datos se inicializa automáticamente al arrancar la app.
+- La interfaz web se levanta con Flask y puede abrirse en el navegador.
+- Si la GUI no funciona, revisa que PyQt5 esté instalado.
 
-```
-inventario-medicamentos/
-├── config/              # Configuración
-│   ├── __init__.py
-│   └── settings.py      # Variables globales
-├── database/            # Base de datos
-│   ├── __init__.py
-│   ├── connection.py    # Conexión a BD
-│   └── models.py        # Modelos SQLAlchemy
-├── api/                 # Integraciones externas
-│   ├── __init__.py
-│   ├── gtin_lookup.py   # Búsqueda de GTIN (OpenFoodFacts + Google)
-│   └── google_api.py    # API de Google personalizada
-├── core/                # Lógica principal
-│   ├── __init__.py
-│   ├── barcode_scanner.py     # Lectura de códigos
-│   ├── inventory_manager.py   # Gestión de inventario
-│   └── pos_manager.py         # Punto de venta
-├── ui/                  # Interfaces de usuario
-│   ├── __init__.py
-│   ├── terminal_ui.py   # Terminal
-│   └── gui_ui.py        # GUI (PyQt5)
-├── web/                 # Interfaz web
-│   ├── __init__.py
-│   ├── app.py           # Aplicación Flask + API REST
-│   ├── templates/       # Plantillas HTML
-│   │   ├── index.html
-│   │   ├── inventario.html
-│   │   ├── pos.html
-│   │   └── reportes.html
-│   └── static/          # CSS, JS, imágenes
-├── data/                # Archivos de datos
-├── main.py              # Punto de entrada
-├── requirements.txt     # Dependencias
-├── .env                 # Configuración (NO commitar)
-└── README.md           # Este archivo
-```
+## Documentación adicional
 
-## 🎯 Funcionalidades Principales
+- CHANGELOG.md: historial de cambios
+- DOCUMENTACION_COMPLETA.md: guía técnica más amplia
+- FAQ.md: preguntas frecuentes y soluciones
 
-### A. 📦 Gestión de Inventario
-- Registrar nuevos productos
-- Buscar por GTIN (escaneo de código de barras)
-- Consulta automática a APIs (Google + OpenFoodFacts)
-- Agregar múltiples presentaciones (tableta, ampolla, cápsula, etc.)
-- Registrar entrada/salida de stock
-- Alertas de stock bajo
-- Historial de movimientos
-
-### B. 🛒 Punto de Venta (POS)
-- Carrito de compra dinámico
-- Escaneo rápido de productos
-- Aplicación de descuentos
-- Cálculo automático de impuestos (IVA 19%)
-- Múltiples métodos de pago
-- Generación de tickets
-- Histórico de ventas
-
-### C. 📊 Reportes
-- Reporte general de inventario
-- Reporte de ventas diarias
-- Productos con stock bajo
-- Valor total del inventario
-- Análisis por método de pago
-
-## 🔑 Características Técnicas
-
-### Base de Datos
-- **Motor**: SQLite local (por defecto), MySQL opcional
-- **ORM**: SQLAlchemy
-- **Modelos**:
-  - Productos
-  - Presentaciones
-  - Movimientos de Inventario
-  - Ventas
-  - Usuarios
-
-### APIs Integradas
-- **OpenFoodFacts** (Gratuita): Búsqueda de medicamentos por GTIN
-- **Google Custom Search** (Opcional): Búsqueda avanzada con imágenes
-
-### Seguridad
-- Validación de GTINs
-- Verificación de dígito de control
-- Manejo de errores robusto
-- Logging completo
-
-## 🛠️ Comandos Útiles
-
-### Crear tablas en la BD
-```bash
-python -c "from database.connection import init_db; init_db()"
-```
-
-### Ver logs
-```python
-import logging
-logging.basicConfig(level=logging.DEBUG)
-```
-
-### Backup de la base de datos
-Para SQLite, simplemente copia el archivo `inventario.db`.
-
-#### Backup de MySQL (opcional)
-```bash
-# Windows
-"C:\xampp\mysql\bin\mysqldump" -u root inventario_medicamentos > backup.sql
-
-# Linux
-mysqldump -u root inventario_medicamentos > backup.sql
-```
-
-#### Restaurar backup de MySQL
-```bash
-mysql -u root inventario_medicamentos < backup.sql
-```
-
-## 📝 Guía Rápida de Uso
-
-### Terminal
-1. Inicia con `python main.py`
-2. Selecciona opción `1` (Terminal)
-3. Usa las opciones del menú
-4. Escanea códigos de barras para operaciones rápidas
-
-### GUI
-1. Inicia con `python main.py`
-2. Selecciona opción `2` (GUI)
-3. Usa la interfaz visual intuitiva
-
-### Web
-1. Inicia con `python main.py`
-2. Selecciona opción `3` (Web)
-3. Abre `http://localhost:5000` en tu navegador
-4. Accede desde cualquier dispositivo en la red
-
-## 🐛 Solución de Problemas
-
-### Error: "ModuleNotFoundError: No module named 'mysql'"
-```bash
-pip install mysql-connector-python
-```
 
 ### Error: "No se puede conectar a MySQL"
 - Si usas MySQL, verifica que XAMPP esté corriendo
